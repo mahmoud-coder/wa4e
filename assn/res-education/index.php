@@ -83,14 +83,15 @@ Sample code:
 </p>
 <h2 clear="all">Additional Tables Required for the Assignment</h2>
 <p>
-This assignment will add one more table to the database from the previous 
+This assignment will add two more tables to the database from the previous 
 assignment.  We will create <b>Education</b> and <b>Instutition</b> tables 
 and connect them to the <b>Profile</b> table.
 </p>
 <pre>
 CREATE TABLE Institution (
-  institution_id INTEGER NOT NULL KEY AUTO_INCREMENT,
+  institution_id INTEGER NOT NULL AUTO_INCREMENT,
   name VARCHAR(255),
+  PRIMARY KEY(institution_id),
   UNIQUE(name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -222,7 +223,7 @@ while ( $row = $stmt-&gt;fetch(PDO::FETCH_ASSOC) ) {
     $retval[] = $row['name'];
 }
 
-echo(json_encode($retval), JSON_PRETTY_PRINT);
+echo(json_encode($retval, JSON_PRETTY_PRINT));
 </pre>
 
 <h2 clear="all">The Screens for This Assignment</h2>

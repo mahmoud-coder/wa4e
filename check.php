@@ -3,6 +3,8 @@
 // This does a lot of sanity checking and leads the admin through
 // the install process
 
+if ( isset($CFG) ) return;  // Do not allow indirect calls
+
 define('COOKIE_SESSION', true);
 if ( ! file_exists('tsugi') ) {
     echo('<p style="color:red">'."\n");
@@ -28,13 +30,13 @@ if ( ! file_exists('tsugi/config.php') ) {
           make sure to set several *additional* configuration parameters:\n");
     echo("<pre>\n");
     echo("On a production server:\n");
-    echo('    $wwwroot      = \'https://www.wa4e.com/tsugi\';   // For Tsugi'."\n");
+    echo('    $apphome = \'https://www.wa4e.com\';   // For the site'."\n");
+    echo('    $wwwroot = \'https://www.wa4e.com/tsugi\';   // For Tsugi'."\n");
     echo("     ...\n");
-    echo('    $CFG->apphome = \'https://www.wa4e.com\';   // For the site'."\n");
     echo("\nor on localhost:\n");
-    echo('    $wwwroot      = \'http://localhost:8888/wa4e/tsugi\';   // For Tsugi'."\n");
+    echo('    $apphome = \'http://localhost:8888/wa4e\';   // For the site'."\n");
+    echo('    $wwwroot = \'http://localhost:8888/wa4e/tsugi\';   // For Tsugi'."\n");
     echo("     ...\n");
-    echo('    $CFG->apphome = \'https://localhost:8888/wa4e\';   // For the site'."\n");
     echo("\nand to scan for tools and install modules at the parent level:\n");
     echo('    $CFG->tool_folders = array("admin", "../tools", "../mod");'."\n");
     echo('    $CFG->install_folder = $CFG->dirroot."/../mod";'."\n");

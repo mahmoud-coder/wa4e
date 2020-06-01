@@ -27,16 +27,21 @@ if ( isset($_SESSION['id']) ) {
     }
     $submenu->addLink('Badges', $R.'badges');
     $submenu->addLink('Materials', $R.'materials');
+    $submenu->addLink('Rate this course', 'https://www.class-central.com/mooc/7362/web-applications-for-everybody');
+    $submenu->addLink('Privacy', $R.'privacy');
+    if ( $CFG->providekeys ) {
+        $submenu->addLink('LMS Integration', $T . 'settings');
+    }
+    if ( isset($CFG->google_classroom_secret) ) {
+        $submenu->addLink('Google Classroom', $T.'gclass/login');
+    }
+    $submenu->addLink('Free App Store', 'https://www.tsugicloud.org');
     if ( $CFG->DEVELOPER ) {
         $submenu->addLink('Test LTI Tools', $T . 'dev');
-    }
-    if ( $CFG->providekeys ) {
-        $submenu->addLink('LMS Integration', $T . 'admin/key/index');
     }
     if ( isset($_COOKIE['adminmenu']) && $_COOKIE['adminmenu'] == "true" ) {
         $submenu->addLink('Administer', $T . 'admin/');
     }
-    $submenu->addLink('Rate this course', 'https://www.class-central.com/mooc/7362/web-applications-for-everybody');
     $submenu->addLink('Logout', $R.'logout');
     if ( isset($_SESSION['avatar']) ) {
         $set->addRight('<img src="'.$_SESSION['avatar'].'" style="height: 2em;"/>', $submenu);

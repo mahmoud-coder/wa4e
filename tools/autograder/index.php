@@ -29,6 +29,7 @@ $assignments = array(
     'practical-f16-cats.php' => 'Fall 16 Cats Exam',
     'practical-w17-parking.php' => 'Winter 17 Parking Exam',
     'practical-w17-dogs.php' => 'Winter 17 Dogs Exam',
+    'practical-f17-courses.php' => 'Fall 17 Courses Exam',
     'practical-sample.php' => 'Sample Practical Exam'
 );
 
@@ -65,23 +66,22 @@ if ( count($_POST) > 0 && $assn && isset($assignments[$assn]) ) {
     return;
 }
 
+$menu = false;
+if ( $LAUNCH->link && $LAUNCH->user && $LAUNCH->user->instructor ) {
+    $menu = new \Tsugi\UI\MenuSet();
+    $menu->addLeft('Student Data', 'grades.php');
+    if ( $CFG->launchactivity ) {
+        $menu->addRight(__('Launches'), 'analytics');
+    }
+    $menu->addRight(__('Settings'), '#', /* push */ false, SettingsForm::attr());
+}
+
 // View
 $OUTPUT->header();
 $OUTPUT->bodyStart();
-$OUTPUT->topNav();
+$OUTPUT->topNav($menu);
 
-// Settings button and dialog
-
-echo('<div style="float: right;">');
-if ( $USER->instructor ) {
-    if ( $CFG->launchactivity ) {
-        echo('<a href="analytics" class="btn btn-default">Launches</a> ');
-    }
-    echo('<a href="grades.php" target="_blank"><button class="btn btn-info">Grade detail</button></a> '."\n");
-}
-SettingsForm::button();
-echo('</div>');
-
+// Settings dialog
 SettingsForm::start();
 SettingsForm::select("exercise", __('Please select an assignment'),$assignments);
 SettingsForm::dueDate();
@@ -102,6 +102,11 @@ $ALL_GOOD = false;
 function my_error_handler($errno , $errstr, $errfile, $errline , $trace = false)
 {
     global $OUTPUT, $ALL_GOOD;
+    if ( ob_get_status() ) {
+        $ob_output = ob_get_contents();
+        ob_end_clean();
+        echo($ob_output);
+    }
     error_out("The autograder did not find something it was looking for in your HTML - test ended.");
     error_out("Usually the problem is in one of the pages returned from your application.");
     error_out("Use the 'Toggle' links above to see the pages returned by your application.");
@@ -120,6 +125,11 @@ function my_error_handler($errno , $errstr, $errfile, $errline , $trace = false)
 function fatalHandler() {
     global $ALL_GOOD, $OUTPUT;
     if ( $ALL_GOOD ) return;
+    if ( ob_get_status() ) {
+        $ob_output = ob_get_contents();
+        ob_end_clean();
+        echo($ob_output);
+    }
     $error = error_get_last();
     error_out("Fatal error handler triggered");
     if($error) {
@@ -133,7 +143,13 @@ register_shutdown_function("fatalHandler");
 
 // Assume try / catch is in the script
 if ( $assn && isset($assignments[$assn]) ) {
+    ob_start();
     include($assn);
+    $ob_output = ob_get_contents();
+    ob_end_clean();
+    echo($ob_output);
+
+    $LAUNCH->result->setJsonKey('output', $ob_output);
 } else {
     if ( $USER->instructor ) {
         echo("<p>Please use settings to select an assignment for this tool.</p>\n");
@@ -143,6 +159,11 @@ if ( $assn && isset($assignments[$assn]) ) {
 }
 
 $ALL_GOOD = true;
+if ( ob_get_status() ) {
+    $ob_output = ob_get_contents();
+    ob_end_clean();
+    echo($ob_output);
+}
 
 $OUTPUT->footer();
 

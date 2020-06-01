@@ -21,9 +21,6 @@ pre {padding-left: 2em;}
 alt="Image of the auto management application"
 width="300px" src="01-Autos.png" border="2"/>
 </a>
-<p>
-Note that there is no specific sample code for this assignment.
-</p>
 <?php if ( isset($json->solution) ) { ?>
 <h2>Sample solution</h2>
 <p>
@@ -61,11 +58,16 @@ target="_blank">PDO</a> to connect to a database.
 <a href="http://php.net/manual/en/pdo.prepare.php" target="_new">PHP PDO Prepared Statements</a>
 </li>
 <li>
-You can look though the sample code from the lecture. It has examples
+You can look through the sample code from the lecture. It has examples
 of using PDO to communicate with a database:
 <pre>
 <a href="http://www.wa4e.com/code/pdo.zip" target="_blank">http://www.wa4e.com/code/pdo.zip</a>
 </pre>
+<p>
+Note that this is not precisely sample code for <em>this</em> assignment.  You should
+adapt your login code from the 
+<a href="../rps">Rock Paper Scissors</a> assignment using elements from the sample code above.
+</p>
 </li>
 </ul>
 </p>
@@ -121,7 +123,7 @@ like this if you are using MAMP (Macintosh):
 $pdo = new PDO('mysql:host=localhost;port=8889;dbname=misc', 'fred', 'zap');
 $pdo-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 </pre>
-If you are using XAMPP or Linux yor file should change the port to 3306:
+If you are using XAMPP or Linux you should change the port to 3306:
 <pre>
 &lt;?php
 $pdo = new PDO('mysql:host=localhost;port=3306;dbname=misc', 'fred', 'zap');
